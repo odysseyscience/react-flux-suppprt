@@ -7,13 +7,13 @@ var invariant = require('react/lib/invariant');
  *
  * Example:
 
- var StoreMixin = require('../stores/StoreMixin'),
+ var StoreListener = require('../stores/StoreListener'),
      UserStore = require('../stores/UserStore'),
      OtherStore = require('../stores/OtherStore');
 
  var SomeComponent = React.createClass({
     mixins: [
-        StoreMixin(UserStore, OtherStore)
+        StoreListener(UserStore, OtherStore)
     ],
 
     getStateFromStores: function() {
@@ -25,7 +25,7 @@ var invariant = require('react/lib/invariant');
 });
 
  */
-var StoreMixin = function(stores) {
+var StoreListener = function(stores) {
 
     // support varargs of stores
     if (!Array.isArray(stores)) {
@@ -35,7 +35,7 @@ var StoreMixin = function(stores) {
     stores.forEach(function(store) {
         invariant(
             store.addChangeListener && store.removeChangeListener,
-            'Stores used with the `StoreMixin` should extend `BaseStore` and have methods ' +
+            'Stores used with the `StoreListener` should extend `BaseStore` and have methods ' +
                 '`addChangeListener` and `removeChangeListener`'
         );
     });
@@ -45,7 +45,7 @@ var StoreMixin = function(stores) {
         getInitialState: function() {
             invariant(
                 this.getStateFromStores,
-                'Components with `StoreMixin` must define `getStateFromStores`'
+                'Components with `StoreListener` must define `getStateFromStores`'
             );
             return this.getStateFromStores();
         },
@@ -69,14 +69,14 @@ var StoreMixin = function(stores) {
     };
 };
 
-StoreMixin.componentWillMount = function() {
+StoreListener.componentWillMount = function() {
     invariant(
         false,
-        '`StoreMixin` itself is not a mixin, but a function to create a mixin.  Pass the ' +
+        '`StoreListener` itself is not a mixin, but a function to create a mixin.  Pass the ' +
         'stores you want to listen to as arguments to the function.  For example: ' +
-        '`mixins: [ StoreMixin(UserStore) ]`.' +
+        '`mixins: [ StoreListener(UserStore) ]`.' +
         (this.constructor.displayName ? '  See component: ' + this.constructor.displayName : '')
     );
 };
 
-module.exports = StoreMixin;
+module.exports = StoreListener;
