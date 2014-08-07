@@ -31,17 +31,17 @@ To create stores, have them use the `BaseStore` to setup common methods stores n
 Listening for Store Changes
 ------------------------------
 
-Use the `StoreMixin` to listen for changes.  Components must define a `getStateFromStores()` to be called when the state has been updated.
+Use the `StoreListener` to listen for changes.  Components must define a `getStateFromStores()` to be called when the state has been updated.
 
 **Component.jsx**
 
     var React = require('react'),
-        StoreMixin = require('../stores/StoreMixin'),
+        StoreListener = require('../stores/StoreListener'),
         UserStore = require('../stores/UserStore');
 
     var Component = React.createClass({
         mixins: [
-            StoreMixin(UserStore)
+            StoreListener(UserStore)
         ],
         displayName: 'Component',
 
